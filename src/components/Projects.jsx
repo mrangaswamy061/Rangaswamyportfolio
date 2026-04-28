@@ -1,49 +1,22 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, MessageCircle, Heart, ExternalLink, Users, BarChart3, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { TrendingUp, ExternalLink, Globe, Zap } from 'lucide-react';
 
 const PROJECTS = [
   {
-    cat: 'Brand Campaign',
-    emoji: '📢',
-    title: 'GlowUp Cosmetics – Awareness Drive',
-    desc: 'Developed a 30-day content calendar for a local cosmetics brand, using reels, stories, and polls to drive organic reach and product awareness.',
+    cat: 'Personal Portfolio',
+    emoji: '🌐',
+    title: 'Rangaswamy M – Portfolio Website',
+    desc: 'A premium personal brand website built with React, Tailwind CSS v4, and Framer Motion. Features dark/light mode, animated loading screen, scroll-spy navbar, typing hero, resume timeline, skill infographics, and a validated contact form.',
     metrics: [
-      { icon: <TrendingUp size={14} />, val: '+150%', label: 'Reach' },
-      { icon: <Heart size={14} />, val: '4.8k', label: 'Likes' },
-      { icon: <Users size={14} />, val: '+320', label: 'Followers' },
+      { icon: <Globe size={14} />, val: 'Live', label: 'Status' },
+      { icon: <TrendingUp size={14} />, val: 'React', label: 'Stack' },
+      { icon: <Zap size={14} />, val: 'Vite', label: 'Build' },
     ],
-    tags: ['Instagram', 'Reels', 'Content Calendar'],
+    tags: ['React', 'Framer Motion', 'Tailwind CSS', 'Vite'],
     color: '#e8a87c',
-    img: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    cat: 'Community Management',
-    emoji: '🤝',
-    title: 'FitLife India – Engagement Strategy',
-    desc: 'Initiated Q&A series, UGC campaigns, and weekly challenges for a fitness brand, resulting in 12% organic engagement rate (3× industry average).',
-    metrics: [
-      { icon: <MessageCircle size={14} />, val: '700+', label: 'Comments' },
-      { icon: <BarChart3 size={14} />, val: '12%', label: 'Eng. Rate' },
-      { icon: <Zap size={14} />, val: '3×', label: 'Avg. Rate' },
-    ],
-    tags: ['Community', 'UGC', 'Fitness'],
-    color: '#4facfe',
-    img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    cat: 'Product Launch',
-    emoji: '🚀',
-    title: 'TechStart App – Launch Campaign',
-    desc: 'Coordinated multi-platform promotional posts across Instagram, LinkedIn, and Twitter for a startup app launch, using targeted hashtags and influencer mentions.',
-    metrics: [
-      { icon: <TrendingUp size={14} />, val: '+80%', label: 'Traffic' },
-      { icon: <BarChart3 size={14} />, val: '3.5k', label: 'Clicks' },
-      { icon: <Users size={14} />, val: '500+', label: 'Signups' },
-    ],
-    tags: ['LinkedIn', 'Product Launch', 'Strategy'],
-    color: '#a78bfa',
-    img: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    img: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    link: 'https://mrangaswamy061.github.io/Rangaswamyportfolio/',
   },
 ];
 
@@ -57,12 +30,12 @@ const ProjectCard = ({ project, isDark }) => {
     <motion.div
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      style={{ borderRadius: '1.5rem', overflow: 'hidden', background: surface, border: `1px solid ${border}`, cursor: 'pointer', position: 'relative' }}
+      style={{ borderRadius: '1.5rem', overflow: 'hidden', background: surface, border: `1px solid ${border}`, cursor: 'pointer', position: 'relative', display: 'flex', flexDirection: 'column' }}
       animate={{ y: hovered ? -6 : 0, boxShadow: hovered ? `0 24px 50px rgba(0,0,0,${isDark ? '0.4' : '0.12'})` : 'none' }}
       transition={{ duration: 0.3 }}
     >
       {/* Image */}
-      <div style={{ height: 200, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ height: 200, overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
         <motion.img
           src={project.img}
           alt={project.title}
@@ -85,9 +58,9 @@ const ProjectCard = ({ project, isDark }) => {
       </div>
 
       {/* Body */}
-      <div style={{ padding: '1.75rem' }}>
+      <div style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
         <h3 style={{ fontWeight: 700, fontSize: '1.05rem', color: isDark ? '#f0ede8' : '#1a1a2e', marginBottom: '0.75rem', lineHeight: 1.4 }}>{project.title}</h3>
-        <p style={{ fontSize: '0.88rem', color: isDark ? 'rgba(240,237,232,0.6)' : 'rgba(26,26,46,0.6)', lineHeight: 1.7, marginBottom: '1.25rem' }}>{project.desc}</p>
+        <p style={{ fontSize: '0.88rem', color: isDark ? 'rgba(240,237,232,0.6)' : 'rgba(26,26,46,0.6)', lineHeight: 1.7, marginBottom: '1.25rem', flex: 1 }}>{project.desc}</p>
 
         {/* Metrics */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '1.25rem', padding: '1rem', borderRadius: '0.75rem', background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(26,26,46,0.04)' }}>
@@ -100,17 +73,39 @@ const ProjectCard = ({ project, isDark }) => {
           ))}
         </div>
 
-        {/* Tags */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-          {project.tags.map(t => (
-            <span key={t} style={{
-              padding: '0.25rem 0.75rem', borderRadius: '2rem',
-              fontSize: '0.75rem', fontWeight: 600,
-              background: `${project.color}15`,
-              color: project.color,
-              border: `1px solid ${project.color}30`,
-            }}>#{t}</span>
-          ))}
+        {/* Tags + Link Row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {project.tags.map(t => (
+              <span key={t} style={{
+                padding: '0.25rem 0.75rem', borderRadius: '2rem',
+                fontSize: '0.75rem', fontWeight: 600,
+                background: `${project.color}15`,
+                color: project.color,
+                border: `1px solid ${project.color}30`,
+              }}>#{t}</span>
+            ))}
+          </div>
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                padding: '0.45rem 1rem', borderRadius: '2rem',
+                background: `${project.color}`, color: '#fff',
+                fontSize: '0.78rem', fontWeight: 700,
+                textDecoration: 'none',
+                transition: 'opacity 0.2s, transform 0.2s',
+                flexShrink: 0,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
+            >
+              <ExternalLink size={13} /> View Live
+            </a>
+          )}
         </div>
       </div>
     </motion.div>
@@ -131,14 +126,14 @@ const Projects = ({ theme }) => {
         >
           <div className="section-label" style={{ justifyContent: 'center' }}>Portfolio</div>
           <h2 className="font-display" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: isDark ? '#f0ede8' : '#1a1a2e' }}>
-            Featured <span className="text-gradient-gold">Work</span>
+            My <span className="text-gradient-gold">Projects</span>
           </h2>
           <p style={{ color: isDark ? 'rgba(240,237,232,0.6)' : 'rgba(26,26,46,0.6)', marginTop: '1rem', maxWidth: 500, margin: '1rem auto 0' }}>
-            A showcase of campaigns and strategies I've designed to drive meaningful brand growth.
+            A showcase of campaigns, strategies, and builds I've crafted to drive meaningful brand growth.
           </p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           {PROJECTS.map((p, i) => (
             <motion.div
               key={p.title}

@@ -34,10 +34,24 @@ const Navbar = ({ theme, toggleTheme }) => {
       style={{ padding: scrolled ? '1rem 0' : '1.5rem 0' }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Logo */}
+        {/* Logo - Profile Picture */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <Link to="home" smooth offset={-80} className="font-display text-xl font-bold cursor-pointer" style={{ color: '#e8a87c' }}>
-            RM.
+          <Link to="home" smooth offset={-80} className="cursor-pointer" style={{ display: 'inline-block' }}>
+            <motion.img
+              src="/profile.jpg"
+              alt="Rangaswamy M"
+              whileHover={{ scale: 1.08 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '2px solid #e8a87c',
+                boxShadow: '0 0 0 3px rgba(232,168,124,0.2)',
+                display: 'block',
+              }}
+            />
           </Link>
         </motion.div>
 

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa';
+
+// ─── Web3Forms config ─────────────────────────────────────────────────────────
+// Get your FREE access key in 10 seconds:
+// 1. Go to https://web3forms.com
+// 2. Enter your email (mrangaswamy061@gmail.com) → click "Create Access Key"
+// 3. Copy the key and paste it below — done! No signup needed.
+const WEB3FORMS_KEY = '2fd4308e-6706-4944-b711-dc9bcc8e52b1';
+// ──────────────────────────────────────────────────────────────────────────────
 
 const validate = ({ name, email, message }) => {
   const errors = {};
@@ -13,37 +21,57 @@ const validate = ({ name, email, message }) => {
 
 const Contact = ({ theme }) => {
   const isDark = theme === 'dark';
-  const [form, setForm]       = useState({ name: '', email: '', message: '' });
-  const [errors, setErrors]   = useState({});
-  const [state, setState]     = useState('idle'); // idle | submitting | success
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState({});
+  const [state, setState] = useState('idle'); // idle | submitting | success | error
 
   const txtMain = isDark ? '#f0ede8' : '#1a1a2e';
-  const txtSub  = isDark ? 'rgba(240,237,232,0.6)' : 'rgba(26,26,46,0.6)';
+  const txtSub = isDark ? 'rgba(240,237,232,0.6)' : 'rgba(26,26,46,0.6)';
   const surface = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.9)';
-  const border  = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)';
+  const border = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)';
 
   const onChange = (e) => {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
     if (errors[e.target.name]) setErrors(er => ({ ...er, [e.target.name]: null }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const errs = validate(form);
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setState('submitting');
-    setTimeout(() => {
-      setState('success');
-      setForm({ name: '', email: '', message: '' });
-      setTimeout(() => setState('idle'), 4000);
-    }, 1600);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          subject: `New Portfolio Message from ${form.name}`,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setState('success');
+        setForm({ name: '', email: '', message: '' });
+        setTimeout(() => setState('idle'), 5000);
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    } catch (err) {
+      console.error('Web3Forms error:', err);
+      setState('error');
+      setTimeout(() => setState('idle'), 5000);
+    }
   };
 
   const socials = [
-    { icon: <FaLinkedin />, color: '#0a66c2', label: 'LinkedIn', href: '#' },
-    { icon: <FaInstagram />, color: '#e4405f', label: 'Instagram', href: '#' },
-    { icon: <FaTwitter />,   color: '#1da1f2', label: 'Twitter',   href: '#' },
-    { icon: <FaWhatsapp />,  color: '#25d366', label: 'WhatsApp',  href: 'tel:8310668859' },
+    { icon: <FaLinkedin />, color: '#0a66c2', label: 'LinkedIn', href: 'https://www.linkedin.com/in/rangaswamy-m-b43211360?utm_source=share_via&utm_content=profile&utm_medium=member_android', target: '_blank' },
+    { icon: <FaInstagram />, color: '#e4405f', label: 'Instagram', href: 'https://www.instagram.com/swam___y?igsh=MWwwZTNwODJmN3JsZQ==', target: '_blank' },
+    { icon: <FaTwitter />, color: '#1da1f2', label: 'Twitter', href: '#' },
+    { icon: <FaWhatsapp />, color: '#25d366', label: 'WhatsApp', href: 'https://wa.me/918310668859', target: '_blank' },
   ];
 
   return (
@@ -104,8 +132,8 @@ const Contact = ({ theme }) => {
             <div className="card-glow" style={{ background: surface, border: `1px solid ${border}`, borderRadius: '1.25rem', padding: '1.5rem' }}>
               <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, color: isDark ? 'rgba(240,237,232,0.4)' : 'rgba(26,26,46,0.4)', marginBottom: '1rem' }}>Find Me On</p>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                {socials.map(({ icon, label, color, href }) => (
-                  <a key={label} href={href} title={label} style={{
+                {socials.map(({ icon, label, color, href, target }) => (
+                  <a key={label} href={href} title={label} target={target || '_self'} rel={target === '_blank' ? 'noopener noreferrer' : undefined} style={{
                     width: 44, height: 44, borderRadius: '0.75rem',
                     background: `${color}15`, color, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: '1.1rem', transition: 'transform 0.2s, background 0.2s',
@@ -135,6 +163,14 @@ const Contact = ({ theme }) => {
                   </motion.div>
                   <h4 style={{ fontWeight: 700, fontSize: '1.15rem', color: txtMain, marginBottom: '0.5rem' }}>Message Sent!</h4>
                   <p style={{ color: txtSub }}>Thank you! I'll get back to you very soon.</p>
+                </div>
+              ) : state === 'error' ? (
+                <div style={{ textAlign: 'center', padding: '3rem 0' }}>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200 }}>
+                    <AlertCircle size={56} color="#f87171" style={{ margin: '0 auto 1rem' }} />
+                  </motion.div>
+                  <h4 style={{ fontWeight: 700, fontSize: '1.15rem', color: txtMain, marginBottom: '0.5rem' }}>Oops! Something went wrong.</h4>
+                  <p style={{ color: txtSub }}>Message couldn't be sent. Please try WhatsApp or email me directly.</p>
                 </div>
               ) : (
                 <form onSubmit={onSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

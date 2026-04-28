@@ -120,7 +120,51 @@ const Hero = ({ theme }) => {
             transition={{ duration: 0.9, ease: 'easeOut', delay: 0.1 }}
             style={{ position: 'relative', display: 'flex', justifyContent: 'center', order: 1 }}
           >
-            {/* Rotating ring */}
+            {/* ── Spreading pulse rings ── */}
+            {[0, 1, 2, 3].map((i) => (
+              <motion.div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  top: '50%', left: '50%',
+                  width: 340, height: 420,
+                  borderRadius: '40% 60% 60% 40% / 50% 50% 60% 50%',
+                  border: `1.5px solid ${isDark ? 'rgba(232,168,124,0.55)' : 'rgba(232,140,60,0.5)'}`,
+                  transform: 'translate(-50%, -50%)',
+                  pointerEvents: 'none',
+                }}
+                animate={{
+                  scale: [1, 1.55 + i * 0.28],
+                  opacity: [0.6, 0],
+                }}
+                transition={{
+                  duration: 2.8,
+                  repeat: Infinity,
+                  ease: 'easeOut',
+                  delay: i * 0.7,
+                }}
+              />
+            ))}
+
+            {/* ── Soft glow aura ── */}
+            <motion.div
+              animate={{ opacity: [0.5, 0.85, 0.5], scale: [1, 1.06, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                position: 'absolute',
+                top: '50%', left: '50%',
+                width: 380, height: 460,
+                transform: 'translate(-50%, -50%)',
+                borderRadius: '40% 60% 60% 40% / 50% 50% 60% 50%',
+                background: isDark
+                  ? 'radial-gradient(ellipse, rgba(232,168,124,0.18) 0%, transparent 70%)'
+                  : 'radial-gradient(ellipse, rgba(232,140,60,0.22) 0%, transparent 70%)',
+                filter: 'blur(18px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Rotating dashed ring */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
@@ -131,7 +175,7 @@ const Hero = ({ theme }) => {
                 borderRadius: '60% 40% 70% 30% / 60% 30% 70% 40%',
               }}
             />
-            {/* Second ring static */}
+            {/* Static inner ring */}
             <div style={{
               position: 'absolute',
               inset: -8,

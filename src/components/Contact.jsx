@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
-import { FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa';
+import { FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 
 // ─── Web3Forms config ─────────────────────────────────────────────────────────
 // Get your FREE access key in 10 seconds:
@@ -70,7 +70,6 @@ const Contact = ({ theme }) => {
   const socials = [
     { icon: <FaLinkedin />, color: '#0a66c2', label: 'LinkedIn', href: 'https://www.linkedin.com/in/rangaswamy-m-b43211360?utm_source=share_via&utm_content=profile&utm_medium=member_android', target: '_blank' },
     { icon: <FaInstagram />, color: '#e4405f', label: 'Instagram', href: 'https://www.instagram.com/swam___y?igsh=MWwwZTNwODJmN3JsZQ==', target: '_blank' },
-    { icon: <FaTwitter />, color: '#1da1f2', label: 'Twitter', href: '#' },
     { icon: <FaWhatsapp />, color: '#25d366', label: 'WhatsApp', href: 'https://wa.me/918310668859', target: '_blank' },
   ];
 
